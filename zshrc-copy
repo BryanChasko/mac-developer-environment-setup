@@ -1,6 +1,5 @@
 # ===============================
 # ~/.zshrc — Z Shell Configuration
-# VERSIONED COPY Sep 8 2025
 # ===============================
 # What is zsh?
 #   zsh (Z Shell) is a powerful alternative to bash, the default Unix shell.
@@ -17,40 +16,71 @@
 # a new interactive shell starts (e.g. VS Code terminal, iTerm2).
 # This is where we define PATH, aliases, environment variables, and init tools.
 
+# --- Developer data location (keeps $HOME tidy) ---
+# We store tool state (cargo, rustup, npm globals, venvs, etc.) in ~/Code/.dev.
+# Tools that expect their defaults in $HOME continue to work via symlinks.
+export DEV_HOME="$HOME/Code/.dev"
+export CARGO_HOME="$DEV_HOME/.cargo"
+export RUSTUP_HOME="$DEV_HOME/.cargo/rustup"
+export UV_VENV_HOME="$DEV_HOME/.venvs"
+
+# --- Default working directory for local interactive sessions ---
+# When launching a shell from the local machine (not SSH), start in ~/Code.
+[[ -z "$SSH_TTY" && "$PWD" = "$HOME" ]] && cd "$HOME/Code"
+
+# --- Volta (Node/TS toolchain shims) ---
+# Volta must be FIRST in PATH so node/npm/yarn/pnpm resolve to Volta shims.
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
 # --- Homebrew in PATH (Apple Silicon) ---
 # Homebrew installs packages into /opt/homebrew on Apple Silicon.
 # The 'brew shellenv' command sets PATH and other variables so we can use brew-installed tools.
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Keep this AFTER Volta so brew-installed node can't shadow Volta.
+if [ -x /opt/homebrew/bin/brew ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
-# --- Volta (Node/TS toolchain shims) ---
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
+# --- User local bin + npm global bin (current prefix) ---
+# ~/.local/bin is commonly used by Python tools (uv/pipx/etc.).
+# Your current npm global prefix is: ~/Code/.dev/.npm-global
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$DEV_HOME/.npm-global/bin:$PATH"
 
 # --- Prompt (Starship): fast & readable ---
 # Starship is a universal, themeable prompt. It shows useful info (git branch, language versions, time).
 # This keeps the shell informative without being cluttered.
-eval "$(starship init zsh)"
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 
 # --- Navigation helpers ---
 # zoxide: smarter 'cd'. It remembers directories you visit and lets you jump with `z <name>`.
-eval "$(zoxide init zsh)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 
 # fzf: fuzzy finder. Adds Ctrl-R search for command history and fuzzy file search.
 # The installer created ~/.fzf.zsh which we source here.
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 
 # --- Per-project envs (direnv) ---
 # direnv loads environment variables automatically when you enter a directory with an .envrc file.
 # This keeps secrets and project-specific settings isolated from your global shell.
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
+
+# --- zsh plugins (optional) ---
+# If installed via Homebrew: brew install zsh-autosuggestions zsh-syntax-highlighting
+# We source them if present. Syntax highlighting must be last.
+_ZBREW="$(command -v brew >/dev/null 2>&1 && brew --prefix || echo /opt/homebrew)"
+[ -f "$_ZBREW/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
+  source "$_ZBREW/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[ -f "$_ZBREW/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
+  source "$_ZBREW/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # --- Friendly aliases ---
 # Aliases are shortcuts that save typing and add features.
-alias ls="eza --group-directories-first --icons"    # modern replacement for 'ls'
-alias ll="eza -l --group-directories-first --icons" # long listing
+alias ls="eza --group-directories-first --icons"     # modern replacement for 'ls'
+alias ll="eza -l --group-directories-first --icons"  # long listing
 alias la="eza -la --group-directories-first --icons" # show hidden files
-alias gs="git status -sb"                            # short git status
-alias cat="bat --style=plain --paging=never"         # syntax-highlighted 'cat'
+alias gs="git status -sb"                             # short git status
+alias cat="bat --style=plain --paging=never"          # syntax-highlighted 'cat'
 
 # --- Editor preference ---
 # These tell tools (like git) which editor to use when one is needed.
@@ -58,7 +88,15 @@ export EDITOR="vim"
 export VISUAL="$EDITOR"
 
 # --- Rust toolchain ---
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+# If the cargo env file is present (it exports PATH and completion), source it.
+[ -f "$CARGO_HOME/env" ] && source "$CARGO_HOME/env"
 
 # --- Python (uv and local bins) ---
-export PATH="$HOME/.local/bin:$PATH"
+# ~/.local/bin was added above; uv/venvs live under $UV_VENV_HOME per the setting above.
+
+# --- GPG: ensure pinentry works in terminal ---
+export GPG_TTY="$(tty)"
+
+# --- Shell quality-of-life ---
+# Allow inline comments in interactive mode, etc.
+setopt interactivecomments
