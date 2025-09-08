@@ -1,0 +1,64 @@
+# ===============================
+# ~/.zshrc — Z Shell Configuration
+# VERSIONED COPY Sep 8 2025
+# ===============================
+# What is zsh?
+#   zsh (Z Shell) is a powerful alternative to bash, the default Unix shell.
+#   It offers better autocompletion, smarter history, plugins, and themes.
+#   macOS now ships with zsh as the default shell.
+#
+# Why do developers use it?
+#   - Productivity: advanced tab completion and command history
+#   - Customization: themes (like Starship) and plugins
+#   - Portability: works on macOS, Linux, WSL
+#   - Ecosystem: widely supported by tools like VS Code, iTerm2, tmux
+#
+# The ~/.zshrc file is where we configure zsh. It runs every time
+# a new interactive shell starts (e.g. VS Code terminal, iTerm2).
+# This is where we define PATH, aliases, environment variables, and init tools.
+
+# --- Homebrew in PATH (Apple Silicon) ---
+# Homebrew installs packages into /opt/homebrew on Apple Silicon.
+# The 'brew shellenv' command sets PATH and other variables so we can use brew-installed tools.
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# --- Volta (Node/TS toolchain shims) ---
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+
+# --- Prompt (Starship): fast & readable ---
+# Starship is a universal, themeable prompt. It shows useful info (git branch, language versions, time).
+# This keeps the shell informative without being cluttered.
+eval "$(starship init zsh)"
+
+# --- Navigation helpers ---
+# zoxide: smarter 'cd'. It remembers directories you visit and lets you jump with `z <name>`.
+eval "$(zoxide init zsh)"
+
+# fzf: fuzzy finder. Adds Ctrl-R search for command history and fuzzy file search.
+# The installer created ~/.fzf.zsh which we source here.
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# --- Per-project envs (direnv) ---
+# direnv loads environment variables automatically when you enter a directory with an .envrc file.
+# This keeps secrets and project-specific settings isolated from your global shell.
+eval "$(direnv hook zsh)"
+
+# --- Friendly aliases ---
+# Aliases are shortcuts that save typing and add features.
+alias ls="eza --group-directories-first --icons"    # modern replacement for 'ls'
+alias ll="eza -l --group-directories-first --icons" # long listing
+alias la="eza -la --group-directories-first --icons" # show hidden files
+alias gs="git status -sb"                            # short git status
+alias cat="bat --style=plain --paging=never"         # syntax-highlighted 'cat'
+
+# --- Editor preference ---
+# These tell tools (like git) which editor to use when one is needed.
+export EDITOR="vim"
+export VISUAL="$EDITOR"
+
+# --- Rust toolchain ---
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# --- Python (uv and local bins) ---
+export PATH="$HOME/.local/bin:$PATH"

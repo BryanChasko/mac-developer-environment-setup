@@ -1,0 +1,98 @@
+# Starship Prompt Configuration
+
+This configuration customizes the Starship prompt appearance and behavior.
+
+**File Location:** `~/.config/starship.toml`
+
+## Configuration Overview
+
+This file contains settings for the Starship cross-shell prompt, which provides a fast, customizable prompt for any shell. The configuration is written in TOML format and defines various prompt modules, styling, and behavior options.
+
+## Usage
+
+After modifying the starship.toml file, restart your shell or run `source ~/.bashrc` (or equivalent for your shell) to apply the changes. Starship will automatically detect and use this configuration file.
+
+add_newline = true
+palette = "catppuccin"
+format = "$directory$git_branch$git_status$nodejs$rust$python$package$cmd_duration$time$line_break$character"
+
+[palettes.catppuccin]
+rosewater = "#f5e0dc"
+flamingo  = "#f2cdcd"
+pink      = "#f5c2e7"
+mauve     = "#cba6f7"
+red       = "#f38ba8"
+maroon    = "#eba0ac"
+peach     = "#fab387"
+yellow    = "#f9e2af"
+green     = "#a6e3a1"
+teal      = "#94e2d5"
+sky       = "#89dceb"
+sapphire  = "#74c7ec"
+blue      = "#89b4fa"
+lavender  = "#b4befe"
+text      = "#cdd6f4"
+overlay2  = "#9399b2"
+surface2  = "#585b70"
+base      = "#1e1e2e"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol   = "[✗](bold red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo  = true
+style = "bold lavender"
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "bold mauve"
+
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+conflicted = "[≠](red)"
+ahead      = "[⇡](green)"
+behind     = "[⇣](yellow)"
+modified   = "[*](peach)"
+staged     = "[+](teal)"
+style = "bold peach"
+
+[nodejs]
+symbol = "🦏 "  # Rhino for Node.js
+format = "[$symbol($version )]($style)"
+style = "bold green"
+disabled = false
+
+[rust]
+symbol = "🦀 "  # Crab for Rust
+format = "[$symbol($version )]($style)"
+style = "bold red"
+disabled = false
+
+[python]
+symbol = "🐍 "  # Snake for Python
+format = "[$symbol$virtualenv]($style) "
+style = "bold sky"
+disabled = false
+
+[package]
+symbol = "📦 "
+format = "[$symbol$version]($style) "
+style = "bold mauve"
+disabled = false
+
+[time]
+disabled = false
+format = "[$time]($style) "
+time_format = "%H:%M"
+style = "bold yellow"
+
+[cmd_duration]
+min_time = 2000
+format = "⏱ [$duration]($style) "
+style = "bold flamingo"
+
+[line_break]
+disabled = false

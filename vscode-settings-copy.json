@@ -1,0 +1,15 @@
+{
+  "editor.fontFamily": "'JetBrainsMono NFM', 'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontSize": 14,
+  "editor.formatOnSave": true,
+  "editor.rulers": [80, 120],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  "[rust]": { "editor.defaultFormatter": "rust-lang.rust-analyzer" },
+  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff" },
+
+  // Terminal styling
+  "terminal.integrated.fontFamily": "JetBrainsMono NFM",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.fontWeight": "normal"
+}
