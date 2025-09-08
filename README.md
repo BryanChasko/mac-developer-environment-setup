@@ -1,6 +1,6 @@
 # Mac Developer Environment Setup — Overview & Quick Start
 
-Welcome! This repo contains everything you need to set up a modern, clean, and fast developer environment on macOS (Apple Silicon, tested on Sequoia 15.6.1).
+This repo contains everything Bryan used when setting up a modern, clean, and fast developer environment on macOS (Apple Silicon, tested on Sequoia 15.6.1).
 
 ## What’s Inside
 
