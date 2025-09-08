@@ -1,40 +1,47 @@
 # Mac Developer Environment Setup — Overview & Quick Start
 
-This repo contains everything Bryan used when setting up a modern, clean, and fast developer environment on macOS (Apple Silicon, tested on Sequoia 15.6.1).
+This organizes the tooling Bryan deployed when setting up a cloud-first developer environment on macOS (Apple Silicon, tested on Sequoia 15.6.1), capable of handling light rust, python, and javascript workloads locally as part of ongoing GenAI project work as well as contracting customer/community needs. 
+
+## Bias
+
+Preference for zsh shell [historically have enjoyed oh-my-zsh], vim, VSCode, transparent or light gradient graphic backgrounds, highly accessible fonts/colors, readiness to work in current versions of Python, Rust, and Typescript with autocompliance to best practices on file saves, tons of linting, and lots of autocompletion available.  Documentation orgranized into md files soas to be lightweight and friendly to crawlers and scrapers for LLM ease of use. Desire to keep root user directory (containing downloads, documents, etc) separate from code environment stuff, will lead to containerization and deployment of AWS CodeCatalyst [https://codecatalyst.aws/explore/dev-environments], and evaluate containerization. For now, need to connect to and deploy REST API tooling, secure aws account cli / cdk access to depoy - JSONL for embeddings and interchange. 
+
+## Contributing Principles
+
+- Aim for clean, working code consistent with a Rust-preferred, 
+  JSONL-centered architecture, abstraction towards quick task completion prioritizes Serverless / Vercel architectures.
+- Prefer improvement and consolidation over duplication.
+- Reject fragile hacks, unchecked errors, or untested code.
+- Maintain predictable structure and clear tests.
+
+
+
+## To-dos for this tooling
+
+- Add automated corrections on files save, i.e. length
+- Add Perl and Shell automations to deploy this tooling automagically, test on aws device farm &/or ec2 bare metal
+- Add Docker support.
+- Test current AWS 3D work environments / response with wacom, to see if game dev is possible on newer mac minis.
 
 ## What’s Inside
 
-- **Step-by-step setup log:**
-  See [`2025-09-07-mac-mini-setup.md`](2025-09-07-mac-mini-setup.md) for the full, detailed guide.
-- **Config backups:**
-  - `zshrc-copy`: Z shell configuration
-  - `starship-copy.toml`: Starship prompt config
-  - `vscode-settings-copy.json`: VS Code settings
-- **This README:** High-level summary, philosophy, and quick links.
-
-## Setup Highlights
-
-- **Shell:** zsh (default on macOS), enhanced with Starship for a minimal, informative prompt.
-- **Navigation:** zoxide (smart cd), fzf (fuzzy search), eza (modern ls).
-- **Environment:** direnv for per-project secrets and reproducibility.
-- **Tools:** bat (highlighted cat), ripgrep (fast search), fd (find), jq/fx (JSON), httpie (API), tmux (multiplexing).
-- **Languages:**
-- Node/TypeScript via Volta (per-project, reproducible)
-- Rust via rustup (with clippy, rustfmt)
 - Python via uv (fast, isolated venvs)
-- **Editor:** VS Code with Copilot, Rust Analyzer, Ruff, Prettier, ESLint, and GitLens. Font: JetBrains Mono Nerd Font for icons.
+
+**Editor:**
+
+VS Code with Copilot, Rust Analyzer, Ruff, Prettier, ESLint, and GitLens. 
+
+Font: JetBrains Mono Nerd Font for icons.
 
 ## Getting Started
 
 1. **Read the [setup log](2025-09-07-mac-mini-setup.md)** for step-by-step instructions, commands, and verification steps.
-2. **Restore configs** from the backup files if needed.
+
 3. **Run smoke tests** (see setup log) to confirm everything works.
 
-## Philosophy
 
 We built this environment to be:
 
-- **Clean:** Dotfolders and global installs are redirected to `~/Code/.dev` to keep `$HOME` tidy.
 - **Fast:** All tools are chosen for speed and modern UX.
 - **Reproducible:** Per-project environments, lockfiles, and clear config backups.
 - **Secure:** Secrets and project settings are loaded only when needed.
@@ -45,4 +52,24 @@ For full details, troubleshooting, and explanations, see [`2025-09-07-mac-mini-s
 
 ---
 
-_This README is your quick reference. For the full journey, see the setup log!_
+## To-dos for Bryan [convert to github issues]
+
+- setup rest api toolchain
+
+- spend more time customizing backgrounds, icons, etc
+
+- setup aws cli and cdk toolchain
+
+- Test REST API tooling use case:
+https://developer.marvel.com/
+(sign in with your Disney Plus account 🐭)
+
+- Test AWS use case:
+AWS S3 for storage (bucket: `ultron-embeddings-<account-id>`).
+
+- Create data ingestion pipeline to assemble ultron embeddings.
+[https://github.com/BryanChasko/ultron-embeddings]
+
+- Integrate Terraform.
+
+_This README is your quick reference. For the full environment setup walkthrough, see the setup log in [2025-09-07-mac-mini-setup.md]
