@@ -58,11 +58,34 @@ For full details, troubleshooting, and explanations, see [`2025-09-07-mac-mini-s
 
 - spend more time customizing backgrounds, icons, etc
 
-- setup aws cli and cdk toolchain
-
 - Test REST API tooling use case:
 https://developer.marvel.com/
 (sign in with your Disney Plus account 🐭)
+
+### AWS CLI & SSM Plugin (Next Step)
+
+We have two AWS accounts:
+
+- One for websites
+- One for R&D experimentation
+
+Install AWS CLI and SSM plugin:
+
+```sh
+brew install awscli
+brew install session-manager-plugin
+```
+
+Configure both AWS accounts:
+
+```sh
+aws configure --profile websites
+aws configure --profile rnd
+```
+
+Switch between accounts using the `--profile` flag as needed. Make sure both are set up and tested.
+
+All other setup steps are complete and verified. Once AWS CLI is installed and both accounts are configured, your Mac developer environment will be fully provisioned.
 
 - Test AWS use case:
 AWS S3 for storage (bucket: `ultron-embeddings-<account-id>`).

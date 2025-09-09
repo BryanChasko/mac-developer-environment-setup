@@ -418,10 +418,13 @@ Created `.vscode/settings.json` in the workspace with the following recommended 
 ```sh
 git config --global init.defaultBranch main
 git config --global user.name "Bryan Chasko"
-git config --global user.email "<reddythafox@hotmail.com>"
+# Personal email configuration - see ~/Code/Projects/Marvel-API-Private/docs/git-personal-config.md
+git config --global user.email "YOUR_EMAIL"
 git config --global core.autocrlf input
 git config --global core.whitespace trailing-space,space-before-tab
 ```
+
+> **Personal Email:** For actual email value, authorized users should reference the private configuration in `~/Code/Projects/Marvel-API-Private/docs/git-personal-config.md`
 
 > Note: `.npmrc` exists with prefix pointing to `~/Code/.dev/.npm-global` for global npm installs.
 
@@ -548,33 +551,6 @@ To confirm:
 cat ~/.zshrc | grep 'export PATH="$HOME/.local/bin:$PATH"'
 
 ## Should output the line above if present
-```
-
-### 7.6 AWS CLI & SSM Plugin (Next Step)
-
-We have two AWS accounts:
-
-- One for websites
-- One for R&D experimentation
-
-Install AWS CLI and SSM plugin:
-
-```sh
-brew install awscli
-brew install session-manager-plugin
-```
-
-Configure both AWS accounts:
-
-```sh
-aws configure --profile websites
-aws configure --profile rnd
-```
-
-Switch between accounts using the `--profile` flag as needed. Make sure both are set up and tested.
-
-All other setup steps are complete and verified. Once AWS CLI is installed and both accounts are configured, your Mac developer environment will be fully provisioned.
-
 ---
 
 **For a summary and config backups, see [README.md](README.md) and the files in this directory.**
