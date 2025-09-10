@@ -1,14 +1,14 @@
 # NEXT STEPS
 
-> **Directory Structure:** All project work should be organized under `~/Code/Projects/` to maintain clean separation from your home directory. Tool configurations and cache files are already redirected to `~/Code/.dev/` via symlinks.
+> **Directory Structure:** All project work should be organized under `~/Code/Projects/` to maintain clean separation from MacOS home directory. Tool configurations and cache files are already redirected to `~/Code/.dev/` via symlinks.
 
-### REST API Work Tooling
+## REST API Work Tooling
 
 Our environment already includes essential HTTP tools (`httpie`, `fx`, `jq`) from the main setup. For Marvel API development and JSONL embeddings pipeline work, add these specialized tools:
 
 **API Development & Testing:**
 
-Homebrew automatically handles installation paths - `brew install` puts CLI tools in `/opt/homebrew/bin` (already in your PATH), while `brew install --cask` installs GUI applications to `/Applications` for easy access.
+Homebrew automatically handles installation paths - `brew install` puts CLI tools in `/opt/homebrew/bin` (already in MacOS user PATH), while `brew install --cask` installs GUI applications to `/Applications` for easy access.
 
 ```sh
 # Postman alternative for API testing (GUI app)
@@ -38,13 +38,13 @@ brew install --cask restfox
 
 Create environment variables for Marvel API credentials. Use direnv for project-specific settings to avoid cluttering global shell config, but in our case we're using this API in multiple places so we'll be editing our `.zshrc` to allow our local admin user access to our Marvel API keys. We'll then allow public facing hooks into these files when running locally, to keep our credentials private:
 
-**Marvel Account Setup and API Keys:**
+## Marvel Account Setup and API Keys
 
 - Sign up for Marvel API account using existing Disney Plus / Marvel Unlimited account credentials
 
 - Generated API keys from <https://developer.marvel.com/account>
 
-- "tell us about your projects, 'I organize community upskilling events and I'll be utilizing the marvel api to teach Restful API concepts as well as how to transform the data for formatting in vector storage appropriate for GenAI (with a focus on Ultron as the community loves evil ai). The hope is this excites a new generation of developers while engaging them in the latest pipelines of gaining new insights out of available resources. I'll blog about my experiments at https://builder.aws.com/community/@bryanchasko
+- "tell us about your projects, 'I organize community upskilling events and I'll be utilizing the marvel api to teach Restful API concepts as well as how to transform the data for formatting in vector storage appropriate for GenAI (with a focus on Ultron as the community loves evil ai). The hope is this excites a new generation of developers while engaging them in the latest pipelines of gaining new insights out of available resources. I'll blog about my experiments at <https://builder.aws.com/community/@bryanchasko>
 
 - Store in key manager or use a private repository, i.e., (`Marvel-API-Private`) for secure credential storage, i.e., Marvel-API-Private
 
@@ -56,10 +56,10 @@ Create environment variables for Marvel API credentials. Use direnv for project-
 # - Keep this file private and never commit to public repositories
 # - Ensure proper file permissions (600 - owner read/write only)
 
-# Your Marvel API public key
+# Our Marvel API public key
 MARVEL_PUBLIC_KEY="<publickey>"
 
-# Your Marvel API private key  
+# Our Marvel API private key  
 MARVEL_PRIVATE_KEY="<privatekey>"
 
 # Marvel API base URL
@@ -85,182 +85,62 @@ MARVEL_API_RATE_LIMIT="3000"  # requests per day
 - File permissions set to 600 (owner read/write only)
 - Environment variables loaded globally via `.zshrc` sourcing
 
-> **API Credentials:** Authorized users should reference actual API keys from `~/Code/Projects/Marvel-API-Private/secrets/.env.marvel`
+> **API Credentials:** Authorized users should reference actual API keys from `~/Code/Projects/Marvel-API-Private/secrets/marvel-api.env`
 
 **Quick Marvel API Test (using httpie):**
 
+The Marvel API uses a specific authentication scheme that requires:
+
+Three parameters:
+
+ts - A timestamp (current Unix time)
+apikey - Your public API key
+hash - An MD5 hash of: timestamp + private key + public key
+
+The hash generation process:
+
+All requests must include ts, apikey, and hash as query parameters
+The API validates by recreating the hash server-side
+
+We have have httpie installed. Now let's test the Marvel API connection with htppie.
+HTTPie makes it easy to:
+
+Send HTTP requests from the terminal with readable syntax (http GET ...)
+Pass query parameters directly (characters==1009685 limit==1 ...)
+Handle errors with --check-status (exits nonzero if the request fails)
+Pipe the JSON output to jq for clean filtering
+
 ```sh
-# Generate timestamp and hash for Marvel API authentication
+# Load environment variables (silent)
+source ~/Code/Projects/Marvel-API-Private/secrets/marvel-api.env
+
+# Quick checksum verification (safe for recording)
+echo "API keys loaded and verified ✓"
+
+# Generate timestamp and hash 
 ts=$(date +%s)
 hash=$(echo -n "${ts}${MARVEL_PRIVATE_KEY}${MARVEL_PUBLIC_KEY}" | md5sum | cut -d' ' -f1)
 
-# Test Ultron character endpoint
+echo "Testing Marvel API for Ultron (limited to 1 result)..."
+
+# Test with limit=1 to get just one result
 http GET "https://gateway.marvel.com/v1/public/characters" \
   name=="Ultron" \
+  limit==1 \
   ts==$ts \
   apikey==$MARVEL_PUBLIC_KEY \
   hash==$hash
-```
 
-**Rust HTTP Client Libraries (add to Cargo.toml):**
-
-```toml
-[dependencies]
-reqwest = { version = "0.11", features = ["json"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-tokio = { version = "1.0", features = ["full"] }
-md5 = "0.7"
-```
-
-**VS Code Extensions for API Work:**
-
-```sh
-code --install-extension humao.rest-client
-code --install-extension rangav.vscode-thunder-client
-code --install-extension ms-vscode.vscode-json
-```
-
-**Environment Testing:**
-
-Verify your REST API tooling setup:
-
-```sh
-# Test httpie is working
-http --version
-
-# Test fx JSON processor
-echo '{"test": "data"}' | fx
-
-# Test jq JSON processor  
-echo '{"test": "data"}' | jq '.test'
-
-# Test xh (modern httpie alternative)
-xh --version
-```
-
-> **Marvel API Attribution:** All Marvel API usage must include: "Data provided by Marvel. © 2025 MARVEL"
-
-### AWS CLI & SSM Plugin
-
-We have two AWS accounts:
-
-- One for websites
-- One for R&D experimentation
-
-Install AWS CLI and SSM plugin:
-
-```sh
-brew install awscli
-brew install session-manager-plugin
-```
-
-Configure both AWS accounts:
-
-```sh
-aws configure --profile websites
-aws configure --profile rnd
-```
-
-Switch between accounts using the `--profile` flag as needed. Make sure both are set up and tested.
-
-### AWS CDK
-
-For TypeScript-based infrastructure as code:
-
-```sh
-# Install AWS CDK CLI
-npm install -g aws-cdk
-
-# Bootstrap CDK for your AWS accounts
-cdk bootstrap --profile websites
-cdk bootstrap --profile rnd
-
-# Verify CDK installation
-cdk --version
-```
-
-**CDK Project Structure (for ultron-embeddings infrastructure):**
-
-```sh
-# Work from your organized Code directory
-cd ~/Code/Projects
-
-# Create CDK infrastructure for ultron-embeddings
-mkdir -p ultron-embeddings/infra
-cd ultron-embeddings/infra
-cdk init app --language typescript
-
-# Install additional CDK modules for S3 and Lambda
-npm install @aws-cdk/aws-s3 @aws-cdk/aws-lambda @aws-cdk/aws-apigateway
-```
-
-### Vercel [https://vercel.com/]
-
-For serverless deployment and API hosting:
-
-```sh
-# Install Vercel CLI
-npm install -g vercel
-
-# Login to Vercel
-vercel login
-
-# Link project for deployment
-vercel link
-```
-
-**Environment Variables for Vercel:**
-
-```sh
-# Set Marvel API credentials for Vercel deployment
-# For authorized users: reference actual values from ~/Code/Projects/Marvel-API-Private/secrets/.env.marvel
-vercel env add MARVEL_PUBLIC_KEY
-vercel env add MARVEL_PRIVATE_KEY
-```
-
-### Terraform
-
-For multi-cloud infrastructure management:
-
-```sh
-# Install Terraform
-brew install terraform
-
-# Install Terraform Language Server for VS Code
-code --install-extension hashicorp.terraform
-
-# Verify installation
-terraform --version
-```
-
-**Initialize Terraform for AWS:**
-
-```sh
-# Work from your organized Code directory
-cd ~/Code/Projects
-
-# Create Terraform configuration directory
-mkdir -p terraform-aws-infrastructure
-cd terraform-aws-infrastructure
-
-# Create main.tf for AWS provider
-cat > main.tf << 'EOF'
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
+# Full Test Example & Return
+ultron-embeddings  main + 13:28 
+❯ source ~/Code/Projects/Marvel-API-Private/secrets/marvel-api.env && ts=$(date +%s) && hash=$(echo -n "${ts}${MARVEL_PRIVATE_KEY}${MARVEL_PUBLIC_KEY}" | md5sum | cut -d' ' -f1) && http --check-status GET "https://gateway.marvel.com/v1/public/comics" characters==1009685 limit==1 orderBy=="-modified" ts==$ts apikey==$MARVEL_PUBLIC_KEY hash==$hash | jq '.data.results[0] | {title, description, price: (.prices[0].price // "N/A"), pageCount} // "No comic found."' && echo "Data provided by Marvel. © 2025 MARVEL"
+{
+  "title": "West Coast Avengers (2024) #10",
+  "description": "THE MARK OF ULTRON! OMEGA ULTRON and his followers take on the West Coast Avengers for a final showdown! But as the West Coast Ultron's life hangs in the balance, can the team pull together to save him? And what will it cost Tony Stark if they succeed?",
+  "price": 3.99,
+  "pageCount": 32
 }
-
-provider "aws" {
-  region  = "us-east-1"
-  profile = "rnd"  # or "websites"
-}
-EOF
-
-# Initialize Terraform
-terraform init
+Data provided by Marvel. © 2025 MARVEL
 ```
+
+## EOF

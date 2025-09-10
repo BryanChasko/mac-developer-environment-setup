@@ -23,7 +23,7 @@ Launch VS Code
 
 **VS Code:**
 Open the Command Palette (`Cmd+Shift+P`), type "shell command", and run "Install 'code' command in PATH".
-Restart your terminal for the new `$PATH` to take effect. You can now type `code .` in any folder to launch VS Code there.
+Restart terminal for the new `$PATH` to take effect. You can now type `code .` in any folder to launch VS Code there.
 
 **GitHub Copilot:**
 Provides AI code suggestions directly inside VS Code.
@@ -140,7 +140,7 @@ bat --version
 
 zsh is the default shell on macOS. The `~/.zshrc` file is run every time an interactive shell session starts, and it’s where we configure paths, prompts, tools, aliases, and environment redirection for a clean home directory.
 
-Update your `~/.zshrc` with the following (see `zshrc-copy` for a backup):
+Update `~/.zshrc` with the following (see `zshrc-copy` for a backup):
 
 ```sh
 # --- Homebrew in PATH (Apple Silicon) ---
@@ -302,7 +302,7 @@ Select option 1 (just press Enter) to proceed with the standard installation.
 source "$HOME/.cargo/env"
 ```
 
-Add the above line to your `~/.zshrc` to ensure Rust is available in all new terminal sessions.
+Add the above line to `~/.zshrc` to ensure Rust is available in all new terminal sessions.
 
 **Install additional components:**
 
@@ -328,7 +328,7 @@ cargo fmt --version
 curl -LsSf <https://astral.sh/uv/install.sh> | sh
 ```
 
-The installer places `uv` in `$HOME/.local/bin`. To use `uv` in your shell, add this to your environment:
+The installer places `uv` in `$HOME/.local/bin`. To use `uv` in shell, add it to the environment:
 
 ```sh
 export PATH="$HOME/.local/bin:$PATH"
@@ -340,7 +340,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export UV_VENV_HOME="$HOME/Code/.dev/.venvs"
 ```
 
-Add the above lines to your `~/.zshrc` for persistence.
+Add the above lines to `~/.zshrc` for persistence.
 
 **Why uv?**
 
@@ -348,6 +348,7 @@ Add the above lines to your `~/.zshrc` for persistence.
 - Lock files for reproducible builds
 - Better dependency management than pip/pipenv
 - Built in Rust for speed
+- [https://pypi.org/project/uv/]
 
 **Verify installation:**
 
@@ -444,7 +445,7 @@ gpg --list-secret-keys --keyid-format=long
 
 ## Configure Git to use GPG
 
-git config --global user.signingkey YOUR_KEY_ID
+git config --global user.signingkey OUR_KEY_ID
 git config --global commit.gpgsign true
 ```
 
