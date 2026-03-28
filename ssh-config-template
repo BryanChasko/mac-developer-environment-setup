@@ -1,0 +1,29 @@
+# ~/.ssh/config — haunting SSH aliases
+# Copy to ~/.ssh/config and fill in your values.
+# chmod 600 ~/.ssh/config after copying.
+
+# --- Shared defaults ---
+Host *
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519
+
+# --- Haunting environments ---
+Host haunt-prod
+  HostName <prod-ip-or-hostname>
+  User <username>
+
+Host haunt-dev
+  HostName <dev-ip-or-hostname>
+  User <username>
+
+Host haunt-bastion
+  HostName <bastion-ip-or-hostname>
+  User <username>
+
+# Jump through bastion to internal hosts
+Host haunt-internal
+  HostName <internal-ip>
+  User <username>
+  ProxyJump haunt-bastion

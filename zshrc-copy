@@ -10,10 +10,10 @@
 #   - Productivity: advanced tab completion and command history
 #   - Customization: themes (like Starship) and plugins
 #   - Portability: works on macOS, Linux, WSL
-#   - Ecosystem: widely supported by tools like VS Code, iTerm2, tmux
+#   - Ecosystem: widely supported by tools like VS Code, Ghostty, tmux
 #
 # The ~/.zshrc file is where we configure zsh. It runs every time
-# a new interactive shell starts (e.g. VS Code terminal, iTerm2).
+# a new interactive shell starts (e.g. VS Code terminal, Ghostty).
 # This is where we define PATH, aliases, environment variables, and init tools.
 
 # --- Developer data location (keeps $HOME tidy) ---
@@ -81,6 +81,8 @@ alias ll="eza -l --group-directories-first --icons"  # long listing
 alias la="eza -la --group-directories-first --icons" # show hidden files
 alias gs="git status -sb"                             # short git status
 alias cat="bat --style=plain --paging=never"          # syntax-highlighted 'cat'
+alias top="btm"                                       # graphical system monitor
+alias mux="zellij"                                    # terminal multiplexer
 
 # --- Editor preference ---
 # These tell tools (like git) which editor to use when one is needed.
