@@ -1,16 +1,6 @@
 # Starship Prompt Configuration
-
-This configuration customizes the Starship prompt appearance and behavior.
-
-**File Location:** `~/.config/starship.toml`
-
-## Configuration Overview
-
-This file contains settings for the Starship cross-shell prompt, which provides a fast, customizable prompt for any shell. The configuration is written in TOML format and defines various prompt modules, styling, and behavior options.
-
-## Usage
-
-After modifying the starship.toml file, restart your shell or run `source ~/.bashrc` (or equivalent for your shell) to apply the changes. Starship will automatically detect and use this configuration file.
+# File location: ~/.config/starship.toml
+# Deploy: cp starship-copy.toml ~/.config/starship.toml
 
 add_newline = true
 palette = "catppuccin"
@@ -39,7 +29,7 @@ base      = "#1e1e2e"
 [username]
 show_always = false
 format = "[$user]($style) "
-style_root = "bold red"    # 💀 root gets red
+style_root = "bold red"
 style_user = "bold overlay2"
 
 [hostname]
@@ -71,19 +61,19 @@ staged     = "[+](teal)"
 style = "bold peach"
 
 [nodejs]
-symbol = "🦏 "  # Rhino for Node.js
+symbol = "🦏 "
 format = "[$symbol($version )]($style)"
 style = "bold green"
 disabled = false
 
 [rust]
-symbol = "🦀 "  # Crab for Rust
+symbol = "🦀 "
 format = "[$symbol($version )]($style)"
 style = "bold red"
 disabled = false
 
 [python]
-symbol = "🐍 "  # Snake for Python
+symbol = "🐍 "
 format = "[$symbol$virtualenv]($style) "
 style = "bold sky"
 disabled = false
