@@ -14,7 +14,7 @@ After modifying the starship.toml file, restart your shell or run `source ~/.bas
 
 add_newline = true
 palette = "catppuccin"
-format = "$directory$git_branch$git_status$nodejs$rust$python$package$cmd_duration$time$line_break$character"
+format = "$username$hostname$directory$git_branch$git_status$nodejs$rust$python$package$cmd_duration$time$line_break$character"
 
 [palettes.catppuccin]
 rosewater = "#f5e0dc"
@@ -36,6 +36,17 @@ overlay2  = "#9399b2"
 surface2  = "#585b70"
 base      = "#1e1e2e"
 
+[username]
+show_always = false
+format = "[$user]($style) "
+style_root = "bold red"    # 💀 root gets red
+style_user = "bold overlay2"
+
+[hostname]
+ssh_only = true
+format = "👻 [$hostname]($style) "
+style = "bold teal"
+
 [character]
 success_symbol = "[❯](bold green)"
 error_symbol   = "[✗](bold red)"
@@ -46,7 +57,7 @@ truncate_to_repo  = true
 style = "bold lavender"
 
 [git_branch]
-symbol = " "
+symbol = " "
 format = "[$symbol$branch]($style) "
 style = "bold mauve"
 
