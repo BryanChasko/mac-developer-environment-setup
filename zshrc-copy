@@ -81,8 +81,25 @@ alias ll="eza -l --group-directories-first --icons"  # long listing
 alias la="eza -la --group-directories-first --icons" # show hidden files
 alias gs="git status -sb"                             # short git status
 alias cat="bat --style=plain --paging=never"          # syntax-highlighted 'cat'
-alias top="btm"                                       # graphical system monitor
+alias top="btm"                                       # graphical system monitor (brew install bottom)
 alias mux="zellij"                                    # terminal multiplexer
+
+# --- Ghostty workload profiles ---
+# Open a new Ghostty window tuned for each haunting workload.
+# Usage: gt-inference, gt-aws, gt-otel, gt-rocm, gt-ext, gt-forge
+_GT="/Applications/Ghostty.app/Contents/MacOS/ghostty"
+_GP="$HOME/.config/ghostty/profiles"
+alias gt-inference="$_GT --config-file=$_GP/inference.conf"
+alias gt-aws="$_GT --config-file=$_GP/aws.conf"
+alias gt-otel="$_GT --config-file=$_GP/otel.conf"
+alias gt-rocm="$_GT --config-file=$_GP/ssh-rocm.conf"
+alias gt-ext="$_GT --config-file=$_GP/chrome-ext.conf"
+alias gt-forge="$_GT --config-file=$_GP/mcp-forge.conf"
+
+# SSH into ROCm-AIBOX in a dedicated red-accented window
+gt-ssh-rocm() {
+  "$_GT" --config-file="$_GP/ssh-rocm.conf" --command="ssh haunt-rocm $*"
+}
 
 # --- Editor preference ---
 # These tell tools (like git) which editor to use when one is needed.
