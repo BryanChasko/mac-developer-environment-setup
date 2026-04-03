@@ -1,0 +1,129 @@
+# Starship Prompt — Mac Mini (Warm Powerline)
+# Theme: Catppuccin Mocha — warm accents (peach/maroon/mauve/pink)
+# Deploy: cp to ~/.config/starship.toml on Mac Mini
+# Visual pair: AIBox uses cool blues/teals/greens
+
+format = """
+[](fg:#fab387)\
+$os\
+$username\
+[](bg:#eba0ac fg:#fab387)\
+$hostname\
+[](bg:#f2cdcd fg:#eba0ac)\
+$directory\
+[](bg:#cba6f7 fg:#f2cdcd)\
+$git_branch\
+$git_status\
+[](bg:#f5c2e7 fg:#cba6f7)\
+$python\
+$rust\
+$nodejs\
+$docker_context\
+[](fg:#f5c2e7)\
+$fill\
+$cmd_duration\
+$line_break\
+$character"""
+
+palette = "catppuccin_mocha"
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+[os]
+disabled = false
+style = "bg:#fab387 fg:#1E1E2E"
+
+[os.symbols]
+Macos = " "
+
+[username]
+show_always = true
+style_user = "bg:#fab387 fg:#1E1E2E bold"
+style_root = "bg:#F38BA8 fg:#1E1E2E bold"
+format = '[ $user]($style)'
+
+[hostname]
+ssh_only = false
+style = "bg:#eba0ac fg:#1E1E2E bold"
+format = '[ $hostname ]($style)'
+
+[directory]
+style = "bg:#f2cdcd fg:#1E1E2E bold"
+format = '[ $path ]($style)'
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Code" = " "
+
+[git_branch]
+symbol = ""
+style = "bg:#cba6f7 fg:#1E1E2E"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#cba6f7 fg:#1E1E2E"
+format = '[$all_status$ahead_behind ]($style)'
+
+[python]
+symbol = ""
+style = "bg:#f5c2e7 fg:#1E1E2E"
+format = '[ $symbol ($version) ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#f5c2e7 fg:#1E1E2E"
+format = '[ $symbol ($version) ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#f5c2e7 fg:#1E1E2E"
+format = '[ $symbol ($version) ]($style)'
+
+[docker_context]
+symbol = ""
+style = "bg:#f5c2e7 fg:#1E1E2E"
+format = '[ $symbol $context ]($style)'
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 2_000
+style = "fg:#fab387"
+format = '[ $duration]($style)'
+
+[character]
+success_symbol = "[❯](bold #fab387)"
+error_symbol = "[❯](bold #F38BA8)"
+
+[line_break]
+disabled = false
