@@ -17,7 +17,7 @@ volta stores node versions at `~/Code/.dev/.volta/tools/image/node/` (22.19.0, 2
 
 - SSH key: `~/.ssh/id_ed25519` — registered with BryanChasko GitHub account
 - github.com in `~/.ssh/known_hosts`
-- `gh` CLI: v2.83.2 via homebrew (`/opt/homebrew/bin/gh`) — **token expired**, needs `gh auth login`
+- `gh` CLI: v2.83.2 via homebrew (`/opt/homebrew/bin/gh`) — authenticated
 - homebrew not on PATH in SSH sessions — use full path `/opt/homebrew/bin/gh` or source `~/.zprofile` first
 - repos under `chasko-labs` org — use `git@github.com:chasko-labs/<repo>.git` for clones
 
@@ -51,7 +51,6 @@ chrome-launch-daemon for CSV Course Automator extension testing
 
 ## action items
 
-- `gh auth login` — token expired, needs interactive re-auth
 - homebrew volta (uses manual install at `~/Code/.dev/.volta`) — consider switching to `brew install volta`
 - no crontab entries
 - no launchd git-sync agents (chrome-ext-src is now a git clone — pull manually or add sync)
