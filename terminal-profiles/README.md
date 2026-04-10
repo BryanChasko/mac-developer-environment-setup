@@ -48,7 +48,7 @@ A `ssh()` function wraps the real ssh command. When connecting to `rocm-aibox`:
 cp terminal-profiles/starship-mac-mini-warm.toml ~/.config/starship.toml
 
 # AIBox (via SSH)
-scp terminal-profiles/starship-aibox-cool.toml bryanchasko@rocm-aibox.local:~/.config/starship.toml
+scp terminal-profiles/starship-aibox-cool.toml user@rocm-aibox.local:~/.config/starship.toml
 ```
 
 ## Manual step: create ~/.secrets
